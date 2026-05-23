@@ -8,23 +8,14 @@ import joblib
 
 from src.config import MODELS_DIR, ARTIFACT_DIR
 
-# -------------------------------
-# API CONFIG
-# -------------------------------
 API_URL = "https://walmart-weekly-sales-forecasting.onrender.com"
 
-# -------------------------------
-# STREAMLIT PAGE CONFIG
-# -------------------------------
 st.set_page_config(
     page_title="Walmart Forecast Dashboard",
     page_icon="📈",
     layout="wide"
 )
 
-# -------------------------------
-# LOAD LOCAL PACKAGE
-# -------------------------------
 @st.cache_resource
 def load_pkg():
     return joblib.load(MODELS_DIR / "model_package.joblib")
@@ -35,9 +26,7 @@ pkg = load_pkg()
 leaderboard = pkg["leaderboard"].copy()
 stores = sorted(pkg["store_histories"].keys())
 
-# -------------------------------
 # TITLE
-# -------------------------------
 st.title("📊 Walmart Weekly Sales Forecasting Dashboard")
 
 st.caption(
@@ -45,9 +34,7 @@ st.caption(
     "Random Forest, Ridge, and XGBoost."
 )
 
-# -------------------------------
 # SIDEBAR
-# -------------------------------
 with st.sidebar:
 
     st.header("Forecast Controls")
@@ -103,14 +90,11 @@ with st.sidebar:
     run_btn = st.button("Generate Forecast")
 
 
-# -------------------------------
 # LAYOUT
-# -------------------------------
 col1, col2 = st.columns([1.2, 0.8])
 
-# =========================================================
+
 # RIGHT COLUMN
-# =========================================================
 with col2:
 
     st.subheader("🏆 Model Leaderboard")
@@ -148,9 +132,7 @@ with col2:
             )
 
 
-# =========================================================
 # LEFT COLUMN
-# =========================================================
 with col1:
 
     st.subheader(f"📍 Store {store_id} Forecast")
@@ -169,9 +151,8 @@ with col1:
             "markdown_total": float(markdown_total),
         }
 
-        # -------------------------------
+
         # CALL LIVE API
-        # -------------------------------
         try:
 
             with st.spinner("Generating forecast..."):
@@ -182,9 +163,7 @@ with col1:
                     timeout=120
                 )
 
-            # -------------------------------
             # SUCCESS
-            # -------------------------------
             if response.status_code == 200:
 
                 forecast_df = pd.DataFrame(
@@ -199,14 +178,11 @@ with col1:
                     hide_index=True
                 )
 
-                # -------------------------------
+    
                 # HISTORY
-                # -------------------------------
                 hist = pkg["store_histories"][store_id]
 
-                # -------------------------------
                 # PLOT
-                # -------------------------------
                 fig = go.Figure()
 
                 fig.add_trace(
@@ -262,18 +238,15 @@ with col1:
                     use_container_width=True
                 )
 
-                # -------------------------------
                 # QUICK LINE CHART
-                # -------------------------------
                 st.subheader("📉 Forecast Trend")
 
                 st.line_chart(
                     forecast_df.set_index("date")[["prediction"]]
                 )
 
-            # -------------------------------
+
             # API ERROR
-            # -------------------------------
             else:
 
                 st.error(
@@ -282,9 +255,7 @@ with col1:
 
                 st.code(response.text)
 
-        # -------------------------------
         # REQUEST ERROR
-        # -------------------------------
         except Exception as e:
 
             st.error("Failed to connect to API")
