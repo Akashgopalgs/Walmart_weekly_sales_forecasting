@@ -1,7 +1,7 @@
+from __future__ import annotations
+
 API_URL = "https://walmart-weekly-sales-forecasting.onrender.com"
 import requests
-
-from __future__ import annotations
 
 import pandas as pd
 import streamlit as st
