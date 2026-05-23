@@ -1,3 +1,6 @@
+API_URL = "https://walmart-weekly-sales-forecasting.onrender.com"
+import requests
+
 from __future__ import annotations
 
 import pandas as pd
@@ -8,6 +11,31 @@ import joblib
 
 from src.config import MODELS_DIR, ARTIFACT_DIR
 from src.forecasting_engine import forecast_store
+
+if run_btn:
+    payload = {
+        "store_id": store_id,
+        "target_date": target_date if target_date.strip() else None,
+        "weeks_ahead": weeks_ahead,
+        "model_name": model_name,
+        "temperature_avg": temperature,
+        "fuel_price": fuel,
+        "cpi": cpi,
+        "unemployment": unemployment,
+        "markdown_total": markdown_total,
+    }
+
+    response = requests.post(f"{API_URL}/forecast", json=payload)
+
+    if response.status_code == 200:
+        forecast_df = pd.DataFrame(response.json()["forecasts"])
+        st.success("Forecast generated")
+        st.dataframe(forecast_df, use_container_width=True, hide_index=True)
+
+        # plotting code stays the same
+    else:
+        st.error(f"API error: {response.status_code} - {response.text}")
+
 
 st.set_page_config(page_title="Walmart Forecast Dashboard", page_icon="📈", layout="wide")
 
