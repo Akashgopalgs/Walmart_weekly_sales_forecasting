@@ -2,6 +2,13 @@
 
 End-to-end production-style time series forecasting system for Walmart weekly sales prediction using statistical models, machine learning, FastAPI, and Streamlit deployment.
 
+<div style="display: flex; justify-content: center;">
+  <img src="https://github.com/user-attachments/assets/df86dba8-e840-411c-9c39-d0a3506ad290" width="32%" />
+  <img src="https://github.com/user-attachments/assets/935cd97a-c1a6-466f-b84b-af1cea650ae8" width="32%" />
+  <img  src="https://github.com/user-attachments/assets/76c3a855-c4f1-4d99-934f-2c75e9430232" width="32%" />
+</div>
+
+
 ---
 
 ## 🚀 Live Demo
